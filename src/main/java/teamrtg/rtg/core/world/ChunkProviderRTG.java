@@ -25,7 +25,6 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.MapGenCaves;
 import net.minecraft.world.gen.MapGenRavine;
@@ -53,6 +52,7 @@ import teamrtg.rtg.api.util.TimeTracker;
 import teamrtg.rtg.api.util.TimedHashSet;
 import teamrtg.rtg.api.util.math.CanyonColour;
 import teamrtg.rtg.api.util.math.MathUtils;
+import teamrtg.rtg.api.world.ChunkProviderRTGSettings;
 import teamrtg.rtg.api.world.RTGWorld;
 import teamrtg.rtg.api.world.biome.RTGBiome;
 import teamrtg.rtg.api.world.gen.RealisticBiomeGenerator;
@@ -97,7 +97,7 @@ public class ChunkProviderRTG implements IChunkGenerator {
     private MapGenBase ravineGenerator = new MapGenRavine();
     private StructureOceanMonument oceanMonumentGenerator = new StructureOceanMonument();
     private Biome[] biomesForGeneration;
-    private ChunkProviderSettings settings;
+    private ChunkProviderRTGSettings settings;
     private Accessor<ChunkProviderServer, Set<Long>> forServerLoadingChunks = new Accessor<>("loadingChunks");
     private BiomeProviderRTG bprv;
     private float[] borderNoise;
@@ -160,7 +160,7 @@ public class ChunkProviderRTG implements IChunkGenerator {
         }
 
         if (jsonSettings != null) {
-            this.settings = ChunkProviderSettings.Factory.jsonToFactory(jsonSettings).build();
+            this.settings = ChunkProviderRTGSettings.Factory.jsonToFactory(jsonSettings).build();
             worldIn.setSeaLevel(this.settings.seaLevel);
         }
 
