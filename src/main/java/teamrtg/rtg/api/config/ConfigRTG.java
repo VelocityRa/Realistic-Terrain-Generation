@@ -217,8 +217,7 @@ public class ConfigRTG extends ModConfig {
     public final PropertyBool GENERATE_VILLAGES = addBool("Generate villages", "villages");
     public final PropertyBool ENABLE_VILLAGE_MODIFICATIONS = addBool("Enable village modifications", "villages");
     public final PropertyInt VILLAGE_SIZE = addInt("Size of villages", "villages");
-    public final PropertyInt MIN_DISTANCE_VILLAGES = addInt("Minimum distance between villages", "villages");
-    public final PropertyInt MAX_DISTANCE_VILLAGES = addInt("Maximum distance between villages", "villages");
+    public final PropertyInt DISTANCE_VILLAGES = addInt("Distance between villages", "villages");
     public final PropertyBool VILLAGE_CRASH_FIX = addBool("Village crash fix", "villages");
     
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -635,23 +634,19 @@ public class ConfigRTG extends ModConfig {
             + NEW_LINE +
             "If set to false, RTG will not interfere with village generation at all, and"
             + NEW_LINE +
-            "the '" + MIN_DISTANCE_VILLAGES.getID() + "', '" + MAX_DISTANCE_VILLAGES.getID() + "' & '" + VILLAGE_SIZE.getID() + "' settings will have no effect."
+            "the '" + DISTANCE_VILLAGES.getID() + "' & '" + VILLAGE_SIZE.getID() + "' settings will have no effect."
         );
         
         GENERATE_VILLAGES.setDefault(true).setComment(
         	"Set to false to disable village generation."
         );
         
-        VILLAGE_SIZE.setDefault(3).setRange(0, 10).setComment(
+        VILLAGE_SIZE.setDefault(1).setRange(0, 10).setComment(
         	"Higher values = bigger villages (0 = Vanilla)"
         );
         
-        MIN_DISTANCE_VILLAGES.setDefault(12).setRange(1, Integer.MAX_VALUE).setComment(
-        	"Higher values = villages further apart (8 = Vanilla)"
-        );
-        
-        MAX_DISTANCE_VILLAGES.setDefault(48).setRange(1, Integer.MAX_VALUE).setComment(
-        	"Lower values = villages closer together (32 = Vanilla)"
+        DISTANCE_VILLAGES.setDefault(32).setRange(1, Integer.MAX_VALUE).setComment(
+        	"Higher values = villages further apart (32 = Vanilla)"
         );
         
         VILLAGE_CRASH_FIX.setDefault(true).setComment(
