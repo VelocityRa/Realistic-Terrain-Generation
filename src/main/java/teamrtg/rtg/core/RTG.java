@@ -2,7 +2,6 @@ package teamrtg.rtg.core;
 
 import java.util.ArrayList;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -20,9 +19,6 @@ import teamrtg.rtg.api.world.RealisticBiomeFaker;
 import teamrtg.rtg.client.DebugHandler;
 import teamrtg.rtg.core.event.EventManagerRTG;
 import teamrtg.rtg.core.world.WorldTypeRTG;
-import teamrtg.rtg.core.world.gen.structure.MapGenScatteredFeatureRTG;
-import teamrtg.rtg.core.world.gen.structure.MapGenVillageRTG;
-import teamrtg.rtg.core.world.gen.structure.StructureOceanMonumentRTG;
 
 @Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, version = ModInfo.MOD_VERSION, dependencies = "required-after:Forge@[" + ModInfo.FORGE_DEP + ",)" + ModInfo.MOD_DEPS, acceptableRemoteVersions = "*")
 public class RTG {
@@ -45,9 +41,6 @@ public class RTG {
 
         configPath = event.getModConfigurationDirectory() + "/RTG/";
         Mods.syncAllConfigs();
-        
-        // This must come before the event manager is registered.
-        this.registerStructures();
 
         Logger.info("[FMLPreInitializationEvent] Creating RTG's EventManager");
         eventMgr = new EventManagerRTG();
@@ -80,20 +73,6 @@ public class RTG {
         }
 
     }
-    
-    private void registerStructures()
-    {
-    	// Scattered features
-        MapGenStructureIO.registerStructure(MapGenScatteredFeatureRTG.Start.class, "rtg_MapGenScatteredFeatureRTG");
-        
-        // Villages
-        if (Mods.RTG.config.ENABLE_VILLAGE_MODIFICATIONS.get())
-            MapGenStructureIO.registerStructure(MapGenVillageRTG.Start.class, "rtg_MapGenVillageRTG");
-        
-        // Ocean monuments
-        MapGenStructureIO.registerStructure(StructureOceanMonumentRTG.StartMonument.class, "rtg_MapGenOceanMonumentRTG");
-    }
-
 
     public void runOnServerClose(Runnable action) {
         serverCloseActions.add(action);
