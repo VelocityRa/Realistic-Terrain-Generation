@@ -21,9 +21,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import teamrtg.rtg.api.world.ChunkProviderRTGSettings;
 
 /**
  * @author topisani
@@ -53,8 +53,8 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
             return p_apply_1_.isEmpty() || f != null && Floats.isFinite(f.floatValue()) && f.floatValue() >= 0.0F;
         }
     };
-    private ChunkProviderSettings.Factory defaultSettings = new ChunkProviderSettings.Factory();
-    private ChunkProviderSettings.Factory settings;
+    private ChunkProviderRTGSettings.Factory defaultSettings = new ChunkProviderRTGSettings.Factory();
+    private ChunkProviderRTGSettings.Factory settings;
     private Random random = new Random();
 
     public GuiCustomizeWorldScreenRTG(GuiScreen p_i45521_1_, String p_i45521_2_) {
@@ -64,9 +64,9 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
 
     public void loadValues(String p_175324_1_) {
         if (p_175324_1_ != null && !p_175324_1_.isEmpty()) {
-            this.settings = ChunkProviderSettings.Factory.jsonToFactory(p_175324_1_);
+            this.settings = ChunkProviderRTGSettings.Factory.jsonToFactory(p_175324_1_);
         } else {
-            this.settings = new ChunkProviderSettings.Factory();
+            this.settings = new ChunkProviderRTGSettings.Factory();
         }
     }
 
@@ -452,6 +452,14 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
                 break;
             case 209:
                 this.settings.lapisSpread = (int) value;
+            case 211:
+                this.settings.villageSize = (int) value;
+            case 212:
+                this.settings.distVillages = (int) value;
+            case 214:
+                this.settings.caveDensity = (int) value;
+            case 215:
+                this.settings.caveFrequency = (int) value;
         }
 
         if (id >= 100 && id < 116) {
@@ -792,8 +800,8 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
     }
 
     private void createPagedList() {
-        GuiPageButtonList.GuiListEntry[] aguipagebuttonlist$guilistentry =
-        new GuiPageButtonList.GuiListEntry[]{
+
+                GuiPageButtonList.GuiListEntry[] basicSettingsPage = new GuiPageButtonList.GuiListEntry[]{
         new GuiPageButtonList.GuiSlideEntry(160, I18n.format("createWorld.customize.custom.seaLevel"), true, this, 1.0F, 255.0F, (float) this.settings.seaLevel),
         new GuiPageButtonList.GuiButtonEntry(148, I18n.format("createWorld.customize.custom.useCaves"), true, this.settings.useCaves),
         new GuiPageButtonList.GuiButtonEntry(150, I18n.format("createWorld.customize.custom.useStrongholds"), true, this.settings.useStrongholds),
@@ -803,16 +811,25 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
         new GuiPageButtonList.GuiButtonEntry(210, I18n.format("createWorld.customize.custom.useMonuments"), true, this.settings.useMonuments),
         new GuiPageButtonList.GuiButtonEntry(154, I18n.format("createWorld.customize.custom.useRavines"), true, this.settings.useRavines),
         new GuiPageButtonList.GuiButtonEntry(149, I18n.format("createWorld.customize.custom.useDungeons"), true, this.settings.useDungeons),
-        new GuiPageButtonList.GuiSlideEntry(157, I18n.format("createWorld.customize.custom.dungeonChance"), true, this, 1.0F, 100.0F, (float) this.settings.dungeonChance),
         new GuiPageButtonList.GuiButtonEntry(155, I18n.format("createWorld.customize.custom.useWaterLakes"), true, this.settings.useWaterLakes),
-        new GuiPageButtonList.GuiSlideEntry(158, I18n.format("createWorld.customize.custom.waterLakeChance"), true, this, 1.0F, 100.0F, (float) this.settings.waterLakeChance),
         new GuiPageButtonList.GuiButtonEntry(156, I18n.format("createWorld.customize.custom.useLavaLakes"), true, this.settings.useLavaLakes),
-        new GuiPageButtonList.GuiSlideEntry(159, I18n.format("createWorld.customize.custom.lavaLakeChance"), true, this, 10.0F, 100.0F, (float) this.settings.lavaLakeChance),
         new GuiPageButtonList.GuiButtonEntry(161, I18n.format("createWorld.customize.custom.useLavaOceans"), true, this.settings.useLavaOceans),
         new GuiPageButtonList.GuiSlideEntry(162, I18n.format("createWorld.customize.custom.fixedBiome"), true, this, -1.0F, 37.0F, (float) this.settings.fixedBiome),
         new GuiPageButtonList.GuiSlideEntry(163, I18n.format("createWorld.customize.custom.biomeSize"), true, this, 1.0F, 8.0F, (float) this.settings.biomeSize),
         new GuiPageButtonList.GuiSlideEntry(164, I18n.format("createWorld.customize.custom.riverSize"), true, this, 1.0F, 5.0F, (float) this.settings.riverSize)};
-                GuiPageButtonList.GuiListEntry[] aguipagebuttonlist$guilistentry1 = new GuiPageButtonList.GuiListEntry[]{new GuiPageButtonList.GuiLabelEntry(416, I18n.format("tile.dirt.name"), false), null,
+
+            GuiPageButtonList.GuiListEntry[] structureSettingsPage = new GuiPageButtonList.GuiListEntry[]{
+                    new GuiPageButtonList.GuiSlideEntry(211, "Village Size", false, this, 1.0F, 20.0F, this.settings.villageSize),
+                    new GuiPageButtonList.GuiSlideEntry(212, "Distance Between Villages", false, this, 1f, 500f, this.settings.distVillages),
+                    //new GuiPageButtonList.GuiSlideEntry(214, "Cave Density", false, this, 1f, 40f, this.settings.caveDensity),
+                    //new GuiPageButtonList.GuiSlideEntry(215, "Cave Frequency", false, this, 1f, 40f, this.settings.caveFrequency),
+                    new GuiPageButtonList.GuiSlideEntry(157, I18n.format("createWorld.customize.custom.dungeonChance"), true, this, 1.0F, 100.0F, (float) this.settings.dungeonChance),
+                    new GuiPageButtonList.GuiSlideEntry(159, I18n.format("createWorld.customize.custom.lavaLakeChance"), true, this, 10.0F, 100.0F, (float) this.settings.lavaLakeChance),
+                    new GuiPageButtonList.GuiSlideEntry(158, I18n.format("createWorld.customize.custom.waterLakeChance"), true, this, 1.0F, 100.0F, (float) this.settings.waterLakeChance),
+            };
+
+                GuiPageButtonList.GuiListEntry[] oreSettingsPage = new GuiPageButtonList.GuiListEntry[]{
+        new GuiPageButtonList.GuiLabelEntry(416, I18n.format("tile.dirt.name"), false), null,
         new GuiPageButtonList.GuiSlideEntry(165, I18n.format("createWorld.customize.custom.size"), false, this, 1.0F, 50.0F, (float) this.settings.dirtSize),
         new GuiPageButtonList.GuiSlideEntry(166, I18n.format("createWorld.customize.custom.count"), false, this, 0.0F, 40.0F, (float) this.settings.dirtCount),
         new GuiPageButtonList.GuiSlideEntry(167, I18n.format("createWorld.customize.custom.minHeight"), false, this, 0.0F, 255.0F, (float) this.settings.dirtMinHeight),
@@ -867,7 +884,10 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
         new GuiPageButtonList.GuiSlideEntry(207, I18n.format("createWorld.customize.custom.count"), false, this, 0.0F, 40.0F, (float) this.settings.lapisCount),
         new GuiPageButtonList.GuiSlideEntry(208, I18n.format("createWorld.customize.custom.center"), false, this, 0.0F, 255.0F, (float) this.settings.lapisCenterHeight),
         new GuiPageButtonList.GuiSlideEntry(209, I18n.format("createWorld.customize.custom.spread"), false, this, 0.0F, 255.0F, (float) this.settings.lapisSpread)};
-                GuiPageButtonList.GuiListEntry[] aguipagebuttonlist$guilistentry2 = new GuiPageButtonList.GuiListEntry[]{new GuiPageButtonList.GuiSlideEntry(100, I18n.format("createWorld.customize.custom.mainNoiseScaleX"), false, this, 1.0F, 5000.0F, this.settings.mainNoiseScaleX),
+
+        /*
+                GuiPageButtonList.GuiListEntry[] advancedPage1 = new GuiPageButtonList.GuiListEntry[]{
+        new GuiPageButtonList.GuiSlideEntry(100, I18n.format("createWorld.customize.custom.mainNoiseScaleX"), false, this, 1.0F, 5000.0F, this.settings.mainNoiseScaleX),
         new GuiPageButtonList.GuiSlideEntry(101, I18n.format("createWorld.customize.custom.mainNoiseScaleY"), false, this, 1.0F, 5000.0F, this.settings.mainNoiseScaleY),
         new GuiPageButtonList.GuiSlideEntry(102, I18n.format("createWorld.customize.custom.mainNoiseScaleZ"), false, this, 1.0F, 5000.0F, this.settings.mainNoiseScaleZ),
         new GuiPageButtonList.GuiSlideEntry(103, I18n.format("createWorld.customize.custom.depthNoiseScaleX"), false, this, 1.0F, 2000.0F, this.settings.depthNoiseScaleX),
@@ -883,7 +903,9 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
         new GuiPageButtonList.GuiSlideEntry(113, I18n.format("createWorld.customize.custom.biomeDepthOffset"), false, this, 0.0F, 20.0F, this.settings.biomeDepthOffset),
         new GuiPageButtonList.GuiSlideEntry(114, I18n.format("createWorld.customize.custom.biomeScaleWeight"), false, this, 1.0F, 20.0F, this.settings.biomeScaleWeight),
         new GuiPageButtonList.GuiSlideEntry(115, I18n.format("createWorld.customize.custom.biomeScaleOffset"), false, this, 0.0F, 20.0F, this.settings.biomeScaleOffset)};
-                GuiPageButtonList.GuiListEntry[] aguipagebuttonlist$guilistentry3 = new GuiPageButtonList.GuiListEntry[]{new GuiPageButtonList.GuiLabelEntry(400, I18n.format("createWorld.customize.custom.mainNoiseScaleX") + ":", false),
+
+                GuiPageButtonList.GuiListEntry[] advancedPage2 = new GuiPageButtonList.GuiListEntry[]{
+        new GuiPageButtonList.GuiLabelEntry(400, I18n.format("createWorld.customize.custom.mainNoiseScaleX") + ":", false),
         new GuiPageButtonList.EditBoxEntry(132, String.format("%5.3f", this.settings.mainNoiseScaleX), false, this.numberFilter),
         new GuiPageButtonList.GuiLabelEntry(401, I18n.format("createWorld.customize.custom.mainNoiseScaleY") + ":", false),
         new GuiPageButtonList.EditBoxEntry(133, String.format("%5.3f", this.settings.mainNoiseScaleY), false, this.numberFilter),
@@ -915,12 +937,16 @@ public class GuiCustomizeWorldScreenRTG extends GuiScreen implements GuiSlider.F
         new GuiPageButtonList.EditBoxEntry(146, String.format("%2.3f", this.settings.biomeScaleWeight), false, this.numberFilter),
         new GuiPageButtonList.GuiLabelEntry(415, I18n.format("createWorld.customize.custom.biomeScaleOffset") + ":", false),
         new GuiPageButtonList.EditBoxEntry(147, String.format("%2.3f", this.settings.biomeScaleOffset), false, this.numberFilter)};
+*/
 
-        this.list = new GuiPageButtonList(this.mc, this.width, this.height, 32, this.height - 32, 25, this, aguipagebuttonlist$guilistentry, aguipagebuttonlist$guilistentry1, aguipagebuttonlist$guilistentry2, aguipagebuttonlist$guilistentry3);
+        this.list = new GuiPageButtonList(this.mc, this.width, this.height, 32, this.height - 32, 25, this, basicSettingsPage, structureSettingsPage, oreSettingsPage);
 
-        for (int i = 0; i < 4; ++i) {
-            this.pageNames[i] = I18n.format("createWorld.customize.custom.page" + i);
-        }
+
+        pageNames[0] = I18n.format("createWorld.customize.custom.page" + 0);
+        pageNames[1] = "Structure Settings";
+        pageNames[2] = I18n.format("createWorld.customize.custom.page" + 1);
+        //pageNames[3] = I18n.format("createWorld.customize.custom.page" + 2);
+        //pageNames[4] = I18n.format("createWorld.customize.custom.page" + 3);
 
         this.updatePageControls();
     }

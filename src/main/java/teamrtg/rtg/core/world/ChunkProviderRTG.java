@@ -1,13 +1,6 @@
 package teamrtg.rtg.core.world;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -91,7 +84,7 @@ public class ChunkProviderRTG implements IChunkGenerator {
     private final HashSet<PlaneLocation> toDecorate = new HashSet<>();
     private MapGenBase caveGenerator = new MapGenCaves();
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
-    private MapGenVillage villageGenerator = new MapGenVillage();
+    private MapGenVillage villageGenerator;
     private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
     private MapGenBase ravineGenerator = new MapGenRavine();
@@ -148,6 +141,12 @@ public class ChunkProviderRTG implements IChunkGenerator {
         m.put("distance", "24");
 
         mapFeaturesEnabled = worldIn.getWorldInfo().isMapFeaturesEnabled();
+
+        Map villageGenMap = new HashMap<String, String>();
+        villageGenMap.put("size", String.valueOf(settings.villageSize));
+        villageGenMap.put("distance", String.valueOf(settings.distVillages));
+
+        villageGenerator = new MapGenVillage(villageGenMap);
 
         {
             caveGenerator = net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(caveGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);

@@ -93,7 +93,12 @@ public class ChunkProviderRTGSettings {
     public final int lapisCenterHeight;
     public final int lapisSpread;
 
-    private ChunkProviderRTGSettings(ChunkProviderRTGSettings.Factory settingsFactory) {
+    public final int villageSize;
+    public final int distVillages;
+    public final int caveDensity;
+    public final int caveFrequency;
+
+    private ChunkProviderRTGSettings(Factory settingsFactory) {
         this.coordinateScale = settingsFactory.coordinateScale;
         this.heightScale = settingsFactory.heightScale;
         this.upperLimitScale = settingsFactory.upperLimitScale;
@@ -172,6 +177,12 @@ public class ChunkProviderRTGSettings {
         this.lapisCount = settingsFactory.lapisCount;
         this.lapisCenterHeight = settingsFactory.lapisCenterHeight;
         this.lapisSpread = settingsFactory.lapisSpread;
+
+        this.villageSize = settingsFactory.villageSize;
+        this.distVillages = settingsFactory.distVillages;
+        this.caveDensity = settingsFactory.caveDensity;
+        this.caveFrequency = settingsFactory.caveFrequency;
+
     }
 
     public static class Factory {
@@ -255,6 +266,11 @@ public class ChunkProviderRTGSettings {
         public int lapisCount = 1;
         public int lapisCenterHeight = 16;
         public int lapisSpread = 16;
+
+        public int villageSize = 1;
+        public int distVillages = 32;
+        public int caveDensity = 7;
+        public int caveFrequency = 12;
 
         public static ChunkProviderRTGSettings.Factory jsonToFactory(String p_177865_0_) {
             if (p_177865_0_.isEmpty()) {
@@ -355,6 +371,11 @@ public class ChunkProviderRTGSettings {
             this.lapisCount = 1;
             this.lapisCenterHeight = 16;
             this.lapisSpread = 16;
+
+            this.villageSize = 1;
+            this.distVillages = 32;
+            this.caveDensity = 7;
+            this.caveFrequency = 12;
         }
 
         public boolean equals(Object p_equals_1_) {
@@ -447,6 +468,12 @@ public class ChunkProviderRTGSettings {
             i = 31 * i + this.lapisCount;
             i = 31 * i + this.lapisCenterHeight;
             i = 31 * i + this.lapisSpread;
+
+            i = 31 * i + this.villageSize;
+            i = 31 * i + this.distVillages;
+            i = 31 * i + this.caveDensity;
+            i = 31 * i + this.caveFrequency;
+
             return i;
         }
 
@@ -548,6 +575,12 @@ public class ChunkProviderRTGSettings {
                 ChunkProviderRTGSettings$factory.lapisCount = JsonUtils.getInt(jsonobject, "lapisCount", ChunkProviderRTGSettings$factory.lapisCount);
                 ChunkProviderRTGSettings$factory.lapisCenterHeight = JsonUtils.getInt(jsonobject, "lapisCenterHeight", ChunkProviderRTGSettings$factory.lapisCenterHeight);
                 ChunkProviderRTGSettings$factory.lapisSpread = JsonUtils.getInt(jsonobject, "lapisSpread", ChunkProviderRTGSettings$factory.lapisSpread);
+
+                ChunkProviderRTGSettings$factory.distVillages = JsonUtils.getInt(jsonobject, "distVillages", ChunkProviderRTGSettings$factory.distVillages);
+                ChunkProviderRTGSettings$factory.caveFrequency = JsonUtils.getInt(jsonobject, "caveFrequency", ChunkProviderRTGSettings$factory.caveFrequency);
+                ChunkProviderRTGSettings$factory.caveDensity = JsonUtils.getInt(jsonobject, "caveDensity", ChunkProviderRTGSettings$factory.caveDensity);
+                ChunkProviderRTGSettings$factory.villageSize = JsonUtils.getInt(jsonobject, "villageSize", ChunkProviderRTGSettings$factory.villageSize);
+
             } catch (Exception var7) {
                 ;
             }
@@ -635,6 +668,11 @@ public class ChunkProviderRTGSettings {
             jsonobject.addProperty("lapisCount", (Number) Integer.valueOf(p_serialize_1_.lapisCount));
             jsonobject.addProperty("lapisCenterHeight", (Number) Integer.valueOf(p_serialize_1_.lapisCenterHeight));
             jsonobject.addProperty("lapisSpread", (Number) Integer.valueOf(p_serialize_1_.lapisSpread));
+
+            jsonobject.addProperty("villageSize", (Number) Integer.valueOf(p_serialize_1_.villageSize));
+            jsonobject.addProperty("distVillages", (Number) Integer.valueOf(p_serialize_1_.distVillages));
+            jsonobject.addProperty("caveDensity", (Number) Integer.valueOf(p_serialize_1_.caveDensity));
+            jsonobject.addProperty("caveFrequency", (Number) Integer.valueOf(p_serialize_1_.caveFrequency));
             return jsonobject;
         }
     }
